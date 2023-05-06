@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Implementação Java/big-mercado/big-mercado.iml" filepath="$PROJECT_DIR$/Implementação Java/big-mercado/big-mercado.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/bigmercado.iml" filepath="$PROJECT_DIR$/.idea/bigmercado.iml" />
+    </modules>
+  </component>
+</project>
