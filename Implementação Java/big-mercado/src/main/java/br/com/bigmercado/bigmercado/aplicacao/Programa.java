@@ -30,10 +30,10 @@ public class Programa {
         if(sc.hasNextLine()) sc.nextLine();
     }
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd//MM/yyyy");
-    private static String getStringInput(){
+    public static String getStringInput(){
         return "a";
     }
-    private static int getIntInput(){
+    public static int getIntInput(){
         int value;
         do{
             try {
