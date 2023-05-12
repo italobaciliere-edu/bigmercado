@@ -1,16 +1,29 @@
 package br.com.bigmercado.bigmercado.aplicacao;
 
-import java.text.SimpleDateFormat;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import br.com.bigmercado.bigmercado.entidades.ItemVenda;
+import br.com.bigmercado.bigmercado.entidades.Venda;
+import br.com.bigmercado.bigmercado.enumerados.StatusVenda;
+import br.com.bigmercado.bigmercado.utilitarios.Utilitarios;
+
+import java.util.ArrayList;
 
 public class Programa {
+
+    private int matricula;
+    private String nome;
+    private double salario;
+    private double proventos;
+    private double descontos;
+    private double comissao;
+
+    private static Utilitarios utilitarios = new Utilitarios();
+
     public static void main(String[] args) {
         int op;
         do{
             showMenu();
             System.out.print("Informe a opção: ");
-            op = sc.nextInt();
+            op = utilitarios.getIntInput();
 
             if(op < 1 || op > 6)
                 System.out.println("Opção inválida!");
@@ -22,30 +35,6 @@ public class Programa {
         System.out.println("*** PROGRAMA FINALIZADO ***");
     }
 
-
-
-    // UTILITARIOS
-    private static final Scanner sc = new Scanner(System.in);
-    private static void limpezaDoBuffer(){
-        if(sc.hasNextLine()) sc.nextLine();
-    }
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd//MM/yyyy");
-    public static String getStringInput(){
-        return "a";
-    }
-    public static int getIntInput(){
-        int value;
-        do{
-            try {
-                value = sc.nextInt();
-            }catch (InputMismatchException e){
-                value = 0;
-                System.out.println("*** VALOR INVÁLIDO, INSIRA NOVAMENTE! ***");
-            }
-            limpezaDoBuffer();
-        }while(value == 0);
-        return value;
-    }
 
 
     private static void showMenu(){
@@ -64,37 +53,55 @@ public class Programa {
     private static void realizarVendaEhEmitirCupomFiscal(){
 
         System.out.print("\nNúmero da venda..: ");
-        int numeroDaVenda = getIntInput();
+        int numeroDaVenda = utilitarios.getIntInput();
 
         System.out.print("\nData da venda..: ");
-        String dataDaVenda = sc.nextLine();
+        String dataDaVenda = utilitarios.getStringInput();
 
+        // TODO refatorar para um método com parametro
         int tipoPagamento;
         System.out.print("\nTipo Pagamento (1) DINHEIRO, (2) CHEQUE, (3) CREDITO, (4) DEBITO, (5) PIX: ");
         do{
-            tipoPagamento = sc.nextInt();
-            limpezaDoBuffer();
+            tipoPagamento = utilitarios.getIntInput();
             if(tipoPagamento < 1 || tipoPagamento > 5){
                 System.out.println("***VALOR INVÁLIDO***");
                 System.out.print("Insira novamente: ");
             }
         }while(tipoPagamento < 1 || tipoPagamento > 5);
 
+        Venda venda = new Venda();
+        venda.setNumero(numeroDaVenda);
 
-        System.out.print("\nProduto número: ");
-        int produtoNumero = getIntInput();
+        // TODO transformar o campo para o tipo data. Usar a formatação apenas na exibição
+        venda.setData(dataDaVenda);
+        // TODO pesquisar a forma correta de utilizar o enum
+        venda.setTipoPagamento(tipoPagamento);
+        venda.setStatusVenda(StatusVenda.ABERTURA);
 
-        System.out.print("\nQuantidade: ");
-        int quantidade = getIntInput();
+        ArrayList<ItemVenda> itens = new ArrayList<>();
 
-        System.out.print("\nPreço unitário: ");
-        int precoUnitario = getIntInput();
+        String opcao;
+        do{
+            System.out.print("\nProduto número: ");
+            int produtoNumero = utilitarios.getIntInput();
 
-        System.out.print("\nNome do produto: ");
-        String nomeProduto = sc.nextLine();
+            System.out.print("\nQuantidade: ");
+            int quantidade = utilitarios.getIntInput();
 
-        System.out.println("\n");
-        System.out.println("Novo item? Acione qualquer letra para sim ou \"n\" para [n]ão?");
+            System.out.print("\nPreço unitário: ");
+            int precoUnitario = utilitarios.getIntInput();
+
+            System.out.print("\nNome do produto: ");
+            String nomeProduto = utilitarios.getStringInput();
+
+            System.out.println("\n");
+            System.out.println("Novo item? Acione qualquer letra para sim ou \"n\" para [n]ão?");
+
+        }while(true);
+
+        // TODO definir a forma corretar de adicionar os itens. Será que da certo já instânciar com o objeto vazio
+        venda.setItens(itens);
+
     }
     private static void calcularSalarioLiquidoDosFuncionarios(){}
 }

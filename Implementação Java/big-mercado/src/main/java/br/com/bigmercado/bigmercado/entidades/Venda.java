@@ -36,6 +36,13 @@ public class Venda {
         this.numero = numero;
     }
 
+    public Date getData() {
+        return data;
+    }
+    public void setData(Date data) {
+        this.data = data;
+    }
+
     public TipoPagamento getTipoPagamento() {
         return tipoPagamento;
     }
@@ -53,10 +60,9 @@ public class Venda {
     public ArrayList<ItemVenda> getItens() {
         return itens;
     }
-    public void setItens(ArrayList<ItemVenda> itens) {
-        this.itens = itens;
-    }
-
+//    public void setItens(ArrayList<ItemVenda> itens) {
+//        this.itens = itens;
+//    }
 
     // utilitarios
     public void adicionarItem(ItemVenda itemVenda){
