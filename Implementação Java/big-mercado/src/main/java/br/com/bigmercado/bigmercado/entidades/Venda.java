@@ -2,44 +2,47 @@ package br.com.bigmercado.bigmercado.entidades;
 
 import br.com.bigmercado.bigmercado.enumerados.StatusVenda;
 import br.com.bigmercado.bigmercado.enumerados.TipoPagamento;
+import br.com.bigmercado.bigmercado.utilitarios.Utilitarios;
 
-import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Venda {
 
-    private int numero;
-    private Date data;
+
+    private static int numeroPedido = 0;
+    private ZonedDateTime data;
     private TipoPagamento tipoPagamento;
     private StatusVenda statusVenda;
     private ArrayList<ItemVenda> itens;
 
 
     // construtores
-    public Venda(){}
+    public Venda(){
+        this.numeroPedido++;
+        this.itens = new ArrayList<>();
+    }
 
-    public Venda(int numero, Date data, TipoPagamento tipoPagamento,
-                 StatusVenda statusVenda, ArrayList<ItemVenda> itens){
-        this.numero = numero;
+
+    public Venda(ZonedDateTime data, TipoPagamento tipoPagamento,
+                 StatusVenda statusVenda){
+        super();
+        this.data = data;
         this.tipoPagamento = tipoPagamento;
         this.statusVenda = statusVenda;
-        this.itens = itens;
     }
 
 
     // getters and setters
     public int getNumero() {
-        return numero;
-    }
-    public void setNumero(int numero) {
-        this.numero = numero;
+        return this.numeroPedido;
     }
 
-    public Date getData() {
+    public ZonedDateTime getData() {
         return data;
     }
-    public void setData(Date data) {
+    public void setData(ZonedDateTime data) {
         this.data = data;
     }
 
@@ -60,9 +63,6 @@ public class Venda {
     public ArrayList<ItemVenda> getItens() {
         return itens;
     }
-//    public void setItens(ArrayList<ItemVenda> itens) {
-//        this.itens = itens;
-//    }
 
     // utilitarios
     public void adicionarItem(ItemVenda itemVenda){
@@ -73,27 +73,56 @@ public class Venda {
         this.itens.remove(itemVenda);
     }
 
+
     public double total(){
-        double calcularTotal = 0.0;
+        // TODO testar
+        double total = 0;
         for (ItemVenda item: itens) {
-            calcularTotal += item.subTotal();
+            total += item.subTotal();
         }
-        return calcularTotal;
+        return total;
     }
+
+
+    public String listarItens(){
+        StringBuilder listaItens = new StringBuilder();
+        for (ItemVenda item: itens) {
+            listaItens.append("\n");
+            listaItens.append("-"); // número do pedido vai ser inserido pela class venda
+            listaItens.append(" " + item.getNome());
+            listaItens.append(" R$ " + item.getPrecoUnitario());
+            listaItens.append(" x " + item.getQuantidade());
+            listaItens.append("  =  R$" + (item.getPrecoUnitario() * item.getQuantidade()));
+        }
+        return listaItens.toString();
+    }
+
 
     public void abrirCaixa(int m, Date d, double v){
 
     }
 
-    private Date formatDate(){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return null;
-    }
 
-
-    // default
     @Override
     public String toString(){
-        return null; // implementar igual o layout
+        StringBuilder notaFiscal = new StringBuilder();
+        this.statusVenda = StatusVenda.valueOf("IMPRIMINDO");
+        String linhaDupla = "================================";
+        notaFiscal.append("\n"+linhaDupla);
+        notaFiscal.append("\nBIG MERCADOS DO BAIRRO LTDA");
+        notaFiscal.append("\nDADOS DA VENDA:");
+        notaFiscal.append("\n"+linhaDupla);
+        notaFiscal.append("\nData do pedido: " + new Utilitarios().formatadorDeData(this.data));
+        notaFiscal.append("\nStatus do pedido: " + String.valueOf(this.statusVenda));
+        notaFiscal.append("\nTipo do pagamento: " + String.valueOf(this.tipoPagamento));
+        notaFiscal.append("\nLocal de Entrega: Conforme Info NFE");
+        notaFiscal.append("\n"+linhaDupla);
+        notaFiscal.append("\nITENS DA VENDA");
+        notaFiscal.append("\n"+linhaDupla);
+        notaFiscal.append("\n" + this.listarItens());
+        notaFiscal.append("\n--------------------------------");
+        notaFiscal.append("\nTotal da Venda..........: R$ " + this.total());
+        notaFiscal.append("\n\n");
+        return notaFiscal.toString();
     }
 }

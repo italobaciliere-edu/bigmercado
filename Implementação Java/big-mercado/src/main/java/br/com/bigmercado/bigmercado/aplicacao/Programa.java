@@ -3,18 +3,20 @@ package br.com.bigmercado.bigmercado.aplicacao;
 import br.com.bigmercado.bigmercado.entidades.ItemVenda;
 import br.com.bigmercado.bigmercado.entidades.Venda;
 import br.com.bigmercado.bigmercado.enumerados.StatusVenda;
+import br.com.bigmercado.bigmercado.enumerados.TipoPagamento;
 import br.com.bigmercado.bigmercado.utilitarios.Utilitarios;
 
-import java.util.ArrayList;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class Programa {
 
-    private int matricula;
-    private String nome;
-    private double salario;
-    private double proventos;
-    private double descontos;
-    private double comissao;
+//    private int matricula;
+//    private String nome;
+//    private double salario;
+//    private double proventos;
+//    private double descontos;
+//    private double comissao;
 
     private static Utilitarios utilitarios = new Utilitarios();
 
@@ -52,12 +54,22 @@ public class Programa {
 
     private static void realizarVendaEhEmitirCupomFiscal(){
 
-        System.out.print("\nNúmero da venda..: ");
-        int numeroDaVenda = utilitarios.getIntInput();
+        Venda venda = new Venda();
+        venda.setStatusVenda(StatusVenda.ABERTURA);
 
+        //------------------------------------
+        System.out.print("\nNúmero da venda..: " + venda.getNumero());
+        //------------------------------------
+
+        //------------------------------------
         System.out.print("\nData da venda..: ");
-        String dataDaVenda = utilitarios.getStringInput();
+        ZonedDateTime brazilDateTime = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("America/Sao_Paulo"));
+        System.out.println(utilitarios.formatadorDeData(brazilDateTime));
+        // TODO - Usar a formatação apenas na exibição
+        venda.setData(brazilDateTime);
+        //------------------------------------
 
+        //------------------------------------
         // TODO refatorar para um método com parametro
         int tipoPagamento;
         System.out.print("\nTipo Pagamento (1) DINHEIRO, (2) CHEQUE, (3) CREDITO, (4) DEBITO, (5) PIX: ");
@@ -68,40 +80,48 @@ public class Programa {
                 System.out.print("Insira novamente: ");
             }
         }while(tipoPagamento < 1 || tipoPagamento > 5);
+        if(tipoPagamento == 1)
+            venda.setTipoPagamento(TipoPagamento.DINHEIRO);
+        if(tipoPagamento == 2)
+            venda.setTipoPagamento(TipoPagamento.CHEQUE);
+        if(tipoPagamento == 3)
+            venda.setTipoPagamento(TipoPagamento.CREDITO);
+        if(tipoPagamento == 4)
+            venda.setTipoPagamento(TipoPagamento.DEBITO);
+        if(tipoPagamento == 5)
+            venda.setTipoPagamento(TipoPagamento.PIX);
+        //------------------------------------
 
-        Venda venda = new Venda();
-        venda.setNumero(numeroDaVenda);
+        venda.setStatusVenda(StatusVenda.INICIANDO);
 
-        // TODO transformar o campo para o tipo data. Usar a formatação apenas na exibição
-        venda.setData(dataDaVenda);
-        // TODO pesquisar a forma correta de utilizar o enum
-        venda.setTipoPagamento(tipoPagamento);
-        venda.setStatusVenda(StatusVenda.ABERTURA);
-
-        ArrayList<ItemVenda> itens = new ArrayList<>();
-
+        //------------------------------------
         String opcao;
         do{
+            venda.setStatusVenda(StatusVenda.REGISTRANDO);
+            ItemVenda item = new ItemVenda();
+
             System.out.print("\nProduto número: ");
-            int produtoNumero = utilitarios.getIntInput();
+            item.setNumero(utilitarios.getIntInput());
 
-            System.out.print("\nQuantidade: ");
-            int quantidade = utilitarios.getIntInput();
+            System.out.print("Quantidade: ");
+            item.setQuantidade(utilitarios.getIntInput());
 
-            System.out.print("\nPreço unitário: ");
-            int precoUnitario = utilitarios.getIntInput();
+            System.out.print("Preço unitário: ");
+            item.setPrecoUnitario(utilitarios.getIntInput());
 
-            System.out.print("\nNome do produto: ");
-            String nomeProduto = utilitarios.getStringInput();
+            System.out.print("Nome do produto: ");
+            item.setNome(utilitarios.getStringInput());
 
             System.out.println("\n");
             System.out.println("Novo item? Acione qualquer letra para sim ou \"n\" para [n]ão?");
+            opcao = utilitarios.getStringInput();
 
-        }while(true);
+            venda.adicionarItem(item);
+        }while(!opcao.equalsIgnoreCase("n"));
+        //------------------------------------
 
-        // TODO definir a forma corretar de adicionar os itens. Será que da certo já instânciar com o objeto vazio
-        venda.setItens(itens);
-
+        venda.setStatusVenda(StatusVenda.PROCESSANDO);
+        System.out.println(venda);
     }
-    private static void calcularSalarioLiquidoDosFuncionarios(){}
+//    private static void calcularSalarioLiquidoDosFuncionarios(){}
 }

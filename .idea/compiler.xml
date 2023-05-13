@@ -9,8 +9,5 @@
         <module name="big-mercado" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="big-mercado" target="17" />
-    </bytecodeTargetLevel>
   </component>
 </project>

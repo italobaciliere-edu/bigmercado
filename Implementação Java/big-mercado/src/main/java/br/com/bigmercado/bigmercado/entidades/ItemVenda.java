@@ -11,7 +11,7 @@ public class ItemVenda {
 
 
     // CONSTRUCTORS
-    ItemVenda(){}
+    public ItemVenda(){}
     ItemVenda(int numero, String nome, int quantidade, double precoUnitario){
         this.numero = numero;
         this.nome = nome;
