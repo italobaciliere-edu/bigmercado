@@ -1,5 +1,6 @@
 package br.com.bigmercado.bigmercado.aplicacao;
 
+import br.com.bigmercado.bigmercado.entidades.Caixa;
 import br.com.bigmercado.bigmercado.entidades.ItemVenda;
 import br.com.bigmercado.bigmercado.entidades.Venda;
 import br.com.bigmercado.bigmercado.enumerados.StatusVenda;
@@ -24,7 +25,7 @@ public class Programa {
         int op;
         do{
             showMenu();
-            System.out.print("Informe a opção: ");
+            System.out.println("Informe a opção: ");
             op = utilitarios.getIntInput();
 
             if(op < 1 || op > 6)
@@ -32,6 +33,9 @@ public class Programa {
 
             if(op == 1){
                 realizarVendaEhEmitirCupomFiscal();
+            }
+            if(op == 2){
+                calcularSalarioLiquidoDosFuncionarios();
             }
         }while(op!=5);
         System.out.println("*** PROGRAMA FINALIZADO ***");
@@ -50,6 +54,7 @@ public class Programa {
         menuLayout.append("5 - Sair");
         System.out.println(menuLayout);
     }
+
 
 
     private static void realizarVendaEhEmitirCupomFiscal(){
@@ -123,5 +128,40 @@ public class Programa {
         venda.setStatusVenda(StatusVenda.PROCESSANDO);
         System.out.println(venda);
     }
-//    private static void calcularSalarioLiquidoDosFuncionarios(){}
+
+
+
+    private static void calcularSalarioLiquidoDosFuncionarios(){
+
+        int matricula;
+        String nome;
+        int salario;
+
+        double proventos;
+        double descontos;
+
+        System.out.println("\nInforme a matrícula do Caixa...: ");
+        matricula = utilitarios.getIntInput();
+        System.out.println("Informe o nome do Caixa........: ");
+        nome = utilitarios.getStringInput();
+        System.out.println("Informe o salário base do Caixa: ");
+        salario = utilitarios.getIntInput();
+
+        Caixa caixa = new Caixa(matricula, nome, salario);
+
+        System.out.println("Informe o valor dos Proventos para o caixa: ");
+        caixa.setProventos(utilitarios.getIntInput());
+        System.out.println("Informe o valor dos Descontos para o Caixa: ");
+        caixa.setDescontos(utilitarios.getIntInput());
+
+        StringBuilder dadosExibicao = new StringBuilder();
+        dadosExibicao.append("------------------\n");
+        dadosExibicao.append("DADOS PARA O CAIXA\n");
+        dadosExibicao.append("------------------\n");
+        dadosExibicao.append(caixa);
+        dadosExibicao.append("------------------------------\n");
+        System.out.println(dadosExibicao);
+
+        // TODO - perguntar como deve ser feito a coleta do Gerente. Será que vai ter um looping?
+    }
 }
