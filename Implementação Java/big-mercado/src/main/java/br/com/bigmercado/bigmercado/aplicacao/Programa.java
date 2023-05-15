@@ -35,6 +35,9 @@ public class Programa {
             if(op == 3){
                 verificarBandeiraDoCartao();
             }
+            if(op == 4){
+                sobreOhPrograma();
+            }
         }while(op!=5);
         System.out.println("*** PROGRAMA FINALIZADO ***");
     }
@@ -162,7 +165,6 @@ public class Programa {
 
 
 
-
     private static void verificarBandeiraDoCartao(){
 
         String opcao = "";
@@ -187,5 +189,26 @@ public class Programa {
             }
 
         }while(!opcao.equalsIgnoreCase("f"));
+    }
+
+
+
+    private static void sobreOhPrograma(){
+        StringBuilder stb = new StringBuilder();
+        stb.append("\n+------------------------------------------+");
+        stb.append("\n|             SOBRE O PROGRAMA             |");
+        stb.append("\n+------------------------------------------+");
+        stb.append("\n|BYTA BUG LTDA                             |");
+        stb.append("\n|CLIENTE: BIG MERCADOS                     |");
+        stb.append("\n|VERSÃO 1.0                                |");
+        stb.append("\n|Gerente de projetos: Zemprônia            |");
+        stb.append("\n|Analista de sistemas: Rubêncio            |");
+        stb.append("\n|Programadores: Tunda e Epaminados         |");
+        stb.append("\n|Teste: Zefa, Idalina e Ascânio            |");
+        stb.append("\n+------------------------------------------+");
+        stb.append("\n|Contatos : (31) 60706070                  |");
+        stb.append("\n|           www.bytabugltda.com.br         |");
+        stb.append("\n+------------------------------------------+");
+        System.out.println(stb);
     }
 }
