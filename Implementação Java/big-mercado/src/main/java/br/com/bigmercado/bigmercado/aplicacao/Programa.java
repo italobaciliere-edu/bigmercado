@@ -5,19 +5,14 @@ import br.com.bigmercado.bigmercado.entidades.ItemVenda;
 import br.com.bigmercado.bigmercado.entidades.Venda;
 import br.com.bigmercado.bigmercado.enumerados.StatusVenda;
 import br.com.bigmercado.bigmercado.enumerados.TipoPagamento;
+import br.com.bigmercado.bigmercado.interfaces.MasterCard;
+import br.com.bigmercado.bigmercado.interfaces.Visa;
 import br.com.bigmercado.bigmercado.utilitarios.Utilitarios;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 public class Programa {
-
-//    private int matricula;
-//    private String nome;
-//    private double salario;
-//    private double proventos;
-//    private double descontos;
-//    private double comissao;
 
     private static Utilitarios utilitarios = new Utilitarios();
 
@@ -36,6 +31,9 @@ public class Programa {
             }
             if(op == 2){
                 calcularSalarioLiquidoDosFuncionarios();
+            }
+            if(op == 3){
+                verificarBandeiraDoCartao();
             }
         }while(op!=5);
         System.out.println("*** PROGRAMA FINALIZADO ***");
@@ -137,9 +135,6 @@ public class Programa {
         String nome;
         int salario;
 
-        double proventos;
-        double descontos;
-
         System.out.println("\nInforme a matrícula do Caixa...: ");
         matricula = utilitarios.getIntInput();
         System.out.println("Informe o nome do Caixa........: ");
@@ -163,5 +158,34 @@ public class Programa {
         System.out.println(dadosExibicao);
 
         // TODO - perguntar como deve ser feito a coleta do Gerente. Será que vai ter um looping?
+    }
+
+
+
+
+    private static void verificarBandeiraDoCartao(){
+
+        String opcao = "";
+
+        do{
+
+            System.out.println("Informe o tipo de cartão: (v) Visa, (m) Mastercard, (f) Finaliza");
+            opcao = utilitarios.getStringInput();
+
+            if(opcao.equalsIgnoreCase("f")){
+            } else {
+                int setor;
+
+                System.out.println("Informe o setor para o cartão " + ((opcao.equalsIgnoreCase("v")) ? "Visa" : "Mastercard") + ":");
+                setor = utilitarios.getIntInput();
+
+                System.out.println(
+                    opcao.equalsIgnoreCase("v") ?
+                        new Visa().verificarBandeira(setor) :
+                        new MasterCard().verificarBandeira(setor)
+                );
+            }
+
+        }while(!opcao.equalsIgnoreCase("f"));
     }
 }
